@@ -1,5 +1,5 @@
 {
-  "name": "Next SaaS",
+  "name": "next-saas-rbac",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -8,9 +8,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
-    "turbo": "^2.0.14",
-    "typescript": "^5.4.5"
+    "turbo": "^2.0.14"
   },
   "engines": {
     "node": ">=18"
@@ -18,6 +16,7 @@
   "packageManager": "npm@9.6.5",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "config/*"
   ]
 }
