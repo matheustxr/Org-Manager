@@ -5,65 +5,63 @@ import { z } from 'zod'
 import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 import { createSlug } from '@/utils.ts/create-slug'
+import { getUserPermissions } from '@/utils.ts/get-user-permissions'
 
 import { BadRquestError } from '../_errors/bad-request-error'
 
-export async function createOrganization(app: FastifyInstance) {
+export async function createProject(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .post(
-      '/organizations',
+      '/organizations/:slug/projects',
       {
         schema: {
-          tags: ['organizations'],
-          summary: 'Create a new organization',
+          tags: ['projects'],
+          summary: 'Create a new project',
           security: [{ bearerAuth: [] }],
           body: z.object({
             name: z.string(),
-            domain: z.string().nullish(),
-            shouldAttachUsersByDomain: z.boolean().optional(),
+            description: z.string(),
+          }),
+          params: z.object({
+            slug: z.string(),
           }),
           response: {
             201: z.object({
-              organizationId: z.string().uuid(),
+              projectId: z.string().uuid(),
             }),
           },
         },
       },
       async (request, response) => {
+        const { slug } = request.params
         const userId = await request.getCurrentUserId()
-        const { name, domain, shouldAttachUsersByDomain } = request.body
-        if (domain) {
-          const organizationByDomain = await prisma.organization.findUnique({
-            where: { domain },
-          })
+        const { organization, membership } =
+          await request.getUserMembership(slug)
 
-          if (organizationByDomain) {
-            throw new BadRquestError(
-              'Another organization with the same domain already exists',
-            )
-          }
+        const { cannot } = getUserPermissions(userId, membership.role)
+
+        if (cannot('create', 'Project')) {
+          throw new BadRquestError(
+            `You're not allowed to create a new project.`,
+          )
         }
 
-        const organization = await prisma.organization.create({
+        const { name, description } = request.body
+
+        const project = await prisma.project.create({
           data: {
             name,
             slug: createSlug(name),
-            domain,
-            shouldAttachUsersByDomain,
+            description,
+            organizationId: organization.id,
             ownerId: userId,
-            members: {
-              create: {
-                userId,
-                role: 'ADMIN',
-              },
-            },
           },
         })
 
         return response.status(201).send({
-          organizationId: organization.id,
+          projectId: project.id,
         })
       },
     )
