@@ -5,7 +5,7 @@ import z from 'zod'
 
 import { prisma } from '@/lib/prisma'
 
-import { BadRquestError } from '../_errors/bad-request-error'
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function authencateWithGithub(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -85,7 +85,7 @@ export async function authencateWithGithub(app: FastifyInstance) {
         .parse(githubUserData)
 
       if (email === null) {
-        throw new BadRquestError(
+        throw new BadRequestError(
           'Your github account must have an email to authenticate.',
         )
       }

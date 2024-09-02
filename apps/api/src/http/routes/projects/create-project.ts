@@ -7,7 +7,7 @@ import { prisma } from '@/lib/prisma'
 import { createSlug } from '@/utils.ts/create-slug'
 import { getUserPermissions } from '@/utils.ts/get-user-permissions'
 
-import { BadRquestError } from '../_errors/bad-request-error'
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function createProject(app: FastifyInstance) {
   app
@@ -43,7 +43,7 @@ export async function createProject(app: FastifyInstance) {
         const { cannot } = getUserPermissions(userId, membership.role)
 
         if (cannot('create', 'Project')) {
-          throw new BadRquestError(
+          throw new BadRequestError(
             `You're not allowed to create a new project.`,
           )
         }

@@ -7,7 +7,7 @@ import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 import { getUserPermissions } from '@/utils.ts/get-user-permissions'
 
-import { BadRquestError } from '../_errors/bad-request-error'
+import { BadRequestError } from '../_errors/bad-request-error'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export async function updateOrganization(app: FastifyInstance) {
@@ -59,7 +59,7 @@ export async function updateOrganization(app: FastifyInstance) {
           })
 
           if (organizationByDomain) {
-            throw new BadRquestError(
+            throw new BadRequestError(
               'Another organization with the same domain already exists',
             )
           }

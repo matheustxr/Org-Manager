@@ -8,7 +8,7 @@ import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
 import { prisma } from '@/lib/prisma'
 import { getUserPermissions } from '@/utils.ts/get-user-permissions'
 
-import { BadRquestError } from '../_errors/bad-request-error'
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function transferOrganization(app: FastifyInstance) {
   app
@@ -60,7 +60,7 @@ export async function transferOrganization(app: FastifyInstance) {
         })
 
         if (!transferMembership) {
-          throw new BadRquestError(
+          throw new BadRequestError(
             'Target user is not a member of this organization.',
           )
         }

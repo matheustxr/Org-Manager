@@ -8,7 +8,7 @@ import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
 import { prisma } from '@/lib/prisma'
 import { getUserPermissions } from '@/utils.ts/get-user-permissions'
 
-import { BadRquestError } from '../_errors/bad-request-error'
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function updateProject(app: FastifyInstance) {
   app
@@ -48,7 +48,7 @@ export async function updateProject(app: FastifyInstance) {
         })
 
         if (!project) {
-          throw new BadRquestError('Project not found.')
+          throw new BadRequestError('Project not found.')
         }
 
         const { cannot } = getUserPermissions(userId, membership.role)
