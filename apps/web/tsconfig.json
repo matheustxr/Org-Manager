@@ -1,5 +1,5 @@
 {
-  "extends": "@saas/tsconfig/nextjs.json",
+  "extends": "@saas/ts-config/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -18,3 +18,5 @@
     "node_modules"
   ]
 }
+
+
