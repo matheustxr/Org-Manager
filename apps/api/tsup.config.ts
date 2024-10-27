@@ -5,5 +5,5 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
-  noExternal: ['@saas/auth', '@saas/e'],
+  noExternal: ['@saas/auth', '@saas/env'],
 })
