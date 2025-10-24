@@ -1,4 +1,4 @@
-# Next SaaS RBAC
+# Org Manager RBAC
 
 ## Project Overview
 
